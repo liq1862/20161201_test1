@@ -21,16 +21,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tv;
+    TextView tv,tv2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.textView);
+        tv2 = (TextView) findViewById(R.id.textView2);
     }
 
     public void click1(View v)
@@ -99,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             tv.setText(String.valueOf(temp));
+//  ======================================================================================
+/*顯示時間*/
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            Date now = new Date();
+                            String strDate = sdf.format(now);
+                            tv2.setText(strDate);
                         }
                     });
                     Thread.sleep(1000);
