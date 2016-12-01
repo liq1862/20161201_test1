@@ -24,9 +24,12 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import pl.pawelkleczkowski.customgauge.CustomGauge;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView tv,tv2;
+    CustomGauge cg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.textView);
         tv2 = (TextView) findViewById(R.id.textView2);
+        cg = (CustomGauge) findViewById(R.id.gauge2);
     }
 
     public void click1(View v)
@@ -108,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
                             Date now = new Date();
                             String strDate = sdf.format(now);
                             tv2.setText(strDate);
+//  =======================================================================================
+                            cg.setValue((int)(temp*10));
                         }
                     });
                     Thread.sleep(1000);
