@@ -67,48 +67,57 @@ public class MainActivity extends AppCompatActivity {
         GetData t = new GetData();
         t.start();
     }
-
+//  ========================================================================
+    /*每一秒自動更新資料*/
     private class GetData extends Thread {
         InputStream inputStream = null;
         @Override
         public void run()
         {
             URL url = null;
-            try {
-                url = new URL("https://raspberrytemp-abf6c.firebaseio.com/temp.json");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.connect();
-                inputStream = conn.getInputStream();
+            while(true)
+            {
+                try {
+                    url = new URL("https://raspberrytemp-abf6c.firebaseio.com/temp.json");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.connect();
+                    inputStream = conn.getInputStream();
 
-                //==============
-                ByteArrayOutputStream result = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = inputStream.read(buffer)) != -1) {
-                    result.write(buffer, 0, length);
-                }
-                String str = result.toString();
-                JSONObject obj = new JSONObject(str);
-                final double temp = obj.getDouble("temp");
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tv.setText(String.valueOf(temp));
+                    //==============
+                    ByteArrayOutputStream result = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = inputStream.read(buffer)) != -1) {
+                        result.write(buffer, 0, length);
                     }
-                });
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    String str = result.toString();
+                    JSONObject obj = new JSONObject(str);
+                    final double temp = obj.getDouble("temp");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv.setText(String.valueOf(temp));
+                        }
+                    });
+                    Thread.sleep(1000);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
+
 
         }
     }
-//  =============================================================================
+//  ================================================================
 }
